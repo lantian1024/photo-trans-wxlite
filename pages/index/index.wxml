@@ -1,0 +1,47 @@
+<!--index.wxml-->
+<view class="container">
+    <canvas class="my-canvas" style="width: 3000px; height: 2000px;" canvas-id="myCanvas"></canvas>
+
+    <view class="img-cont">
+        <image class="img pre-img" src="{{img}}" mode="widthFix" bindload="imgLoad" hidden="{{showImg ? true : false}}"></image>
+        <image class="img" src="{{showImg}}" mode="widthFix" bindtap="imgPreview" hidden="{{!showImg ? true : false}}"></image>
+    </view>
+
+    <view class="btn-wrap" wx:if="{{!loading}}">
+        <view class="mode-item btn btn1" bindtap="choseImg">选择图片</view>
+        <view class="mode-item btn btn2" bindtap="saveImg" hidden="{{!showImg}}">保存图片</view>
+        <view class="mode-item btn btn3" bindtap="openModeConfig">参数设置</view>
+    </view>
+    
+    <view class="mode-list">
+        <block wx:for="{{mode}}" wx:key="{{item.name}}">
+            <view bindtap="choseMode" data-index="{{index}}" class="mode-item {{index == modeIndex ? 'mode-item-chosed' : ''}}" >{{item.name}}</view>
+        </block>
+    </view>
+
+    <view class="setting-wrap {{openModeSetting ? '' : 'setting-wrap-hide'}}">
+        <view class="setting-cont">
+            <view class="setting-btn-wrap">
+                <button class="setting-btn" bindtap="confirmConfig" size="mini">确定</button>
+                <button class="setting-btn" bindtap="cancelConfig" size="mini">取消</button>
+            </view>
+            <view class="setting-list">
+                <block wx:for="{{modeConfig.configKey}}" wx:key="{{item}}">
+                    <view class="setting-list-item">
+                        <text class="slider-label">{{modeConfig.config[item].name}}</text>
+                        <slider bindchange="sliderChange" 
+                            data-key="{{item}}"
+                            class="slider-item"
+                            value="{{modeConfig.config[item].value}}" 
+                            step="{{modeConfig.config[item].step}}" 
+                            min="{{modeConfig.config[item].min}}" 
+                            max="{{modeConfig.config[item].max}}" 
+                            block-size='24'
+                            show-value/>
+                    </view>
+                </block>
+                
+            </view>
+        </view>
+    </view>
+</view>

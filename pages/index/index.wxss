@@ -1,0 +1,113 @@
+/**index.wxss**/
+page{
+    height: 100%;
+}
+.container{
+    min-height: 80%;
+    display: flex;
+    align-items: center;
+}
+.img{
+    width: 100%;
+}
+.my-canvas{
+    position: fixed;
+    left: -3000px;
+    top: -2000px;
+}
+.img-cont{
+    width: 750rpx;
+    font-size: 0;
+}
+
+.btn-wrap{
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 7%;
+    opacity: .8;
+    display: flex;
+    justify-content: center;
+}
+.btn-wrap .btn{
+    flex-shrink: 0;
+    margin: 0 10rpx;
+    color: white;
+}
+.btn-wrap .btn1{
+    background: #409eff;
+}
+.btn-wrap .btn2{
+    background: #67c23a;
+}
+.btn-wrap .btn3{
+    background: #909399;
+}
+
+.mode-list{
+    position: fixed;
+    top: 50%;
+    right: 40rpx;
+    transform: translateY(-50%);
+    opacity: .8;
+}
+.mode-item{
+    width: 72rpx;
+    margin-top: 10rpx;
+    padding: 20rpx;
+    border-radius: 56rpx;
+    background: #f9f9fa;
+    font-size: 28rpx;
+    line-height: 36rpx;
+    text-align: center;
+    color: lightgray;
+}
+.mode-item-chosed{
+    color: white;
+    background: #67c23a;
+}
+
+.setting-wrap{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    transition: all .3s ease;
+}
+.setting-wrap-hide{
+    transform: translateY(100%)
+}
+.setting-cont{
+    width: 100%;
+    height: 560rpx;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: white;
+    box-shadow: 0 2px 4px 4px lightgray;
+}
+.setting-btn-wrap{
+    padding: 40rpx;
+    display: flex;
+    justify-content: space-between;
+}
+.setting-btn{
+    margin: 0;
+}
+.setting-list{
+    margin-top: 20rpx;
+}
+.setting-list-item{
+    padding: 20rpx 40rpx;
+    display: flex;
+    align-items: center;
+}
+.slider-label{
+    flex: 0 0 120rpx;
+    font-size: 26rpx;
+    text-align: right;
+}
+.slider-item{
+    flex: 1;
+}
