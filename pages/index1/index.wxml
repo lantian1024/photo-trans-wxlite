@@ -7,18 +7,23 @@
         <image class="img" src="{{showImg}}" mode="widthFix" bindtap="imgPreview" hidden="{{!showImg ? true : false}}"></image>
     </view>
     <br/>
-    <button wx:if="{{!hasUserInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
 
-    <view class="btn-wrap" wx:if="{{!loading}}">
-        <view class="mode-item btn btn1" bindtap="choseImg">选择图片</view>
-        <view class="mode-item btn btn2" bindtap="saveImg" hidden="{{!showImg}}">保存图片</view>
-        <view class="mode-item btn btn3" bindtap="openModeConfig">参数设置</view>
+    <view class="btn-wrap">
+
+        <view class="mode-list">
+            <block wx:for="{{gq}}" wx:key="{{item.path}}">
+                <!-- <view bindtap="choseMode" data-index="{{index}}" class="mode-item {{index == modeIndex ? 'mode-item-chosed' : ''}}">{{item.name}}</view> -->
+                <image bindtap="choseMode" data-index="{{index}}" class="mode-img {{index == modeIndex ? 'mode-img-chosed' : ''}}" src="{{item.path}}" mode="widthFix"></image>
+            </block>
+        </view>
+
+        <view class="btn-cont1">
+            <!-- <view class="mode-item btn btn1" bindtap="choseImg">选择图片</view> -->
+            <button class="mode-item btn btn3" wx:if="{{!hasUserInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 我的头像 </button>
+            <view class="mode-item btn btn2" bindtap="saveImg" >保存图片</view>
+            <view class="mode-item btn btn1" bindtap="openIndex">更多好玩</view>
+        </view>
     </view>
 
-    <view class="mode-list">
-        <block wx:for="{{mode}}" wx:key="{{item.name}}">
-            <view bindtap="choseMode" data-index="{{index}}" class="mode-item {{index == modeIndex ? 'mode-item-chosed' : ''}}">{{item.name}}</view>
-        </block>
-    </view>
 
 </view>

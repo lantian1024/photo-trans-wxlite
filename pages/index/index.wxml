@@ -11,6 +11,8 @@
         <view class="mode-item btn btn1" bindtap="choseImg">选择图片</view>
         <view class="mode-item btn btn2" bindtap="saveImg" hidden="{{!showImg}}">保存图片</view>
         <view class="mode-item btn btn3" bindtap="openModeConfig">参数设置</view>
+
+        <!-- <view class="mode-item btn btn1" bindtap="openIndex1">贴红旗</view> -->
     </view>
     
     <view class="mode-list">

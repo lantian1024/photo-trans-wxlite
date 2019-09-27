@@ -8,22 +8,31 @@ Page({
     data: {
         hasUserInfo: true,
         showImg: '',
-        img: '',
+        img: '/img/wechat.png',
         imgInfo: {},
         loading: false,
+        modeIndex: 0,
 
         gq: [{
             path: '/img/guoqi1.jpg',
             width: 295,
-            height: 221
+            height: 221,
+            scale: 1.2
         }, {
-            path: '/img/guoqi1.jpg',
-            width: 100,
-            height: 100
+            path: '/img/guoqi2.jpg',
+            width: 500,
+            height: 556,
+            scale: .6
         }, {
-            path: '/img/guoqi1.jpg',
-            width: 100,
-            height: 100
+            path: '/img/guoqi3.jpg',
+            width: 270,
+            height: 270,
+            scale: 1
+        }, {
+            path: '/img/guoqi4.png',
+            width: 128,
+            height: 128,
+            scale: 2.5
         } ]
     },
     imgPreview(){
@@ -59,40 +68,33 @@ Page({
         wx.showLoading({
             title: '图像处理中...',
         })
-        console.log(this.data.imgInfo)
         const imgInfo = this.data.imgInfo
         const width = imgInfo.width
         const height = imgInfo.height
 
-        const gq_info = this.data.gq[0]
-        const gq_width = Math.floor(width*.3)
+        const gq_info = this.data.gq[this.data.modeIndex]
+        const gq_width = 300
         const gq_height = Math.floor( gq_width * gq_info.height / gq_info.width )
 
         console.log(gq_width, gq_height)
 
-        ctx.drawImage(this.data.img, 0, 0)
-        ctx.draw()
-        // ctx.drawImage(gq_info.path, 0, 0, gq_info.width, gq_info.height, width - gq_width, height - gq_height, gq_width, gq_height)
-        ctx.drawImage(gq_info.path, 0, 0 )
-        const s = gq_width / gq_info.width
-        ctx.scale(s,s)
-        ctx.draw(true)
+        ctx.clearRect(0, 0, 1000, 1000)
 
-        var failFun = ()=>{
+        var failFun = () => {
             wx.hideLoading()
             this.setData({
                 loading: false
             })
         }
 
-       var draw = ()=>{ 
+        var draw = () => {
             wx.canvasToTempFilePath({
                 x: 0,
                 y: 0,
-                width: width,
-                height: height,
-                destWidth: width,
-                destHeight: height,
+                width: 1000,
+                height: 1000,
+                destWidth: 500,
+                destHeight: 500,
                 canvasId: 'myCanvas',
                 quality: 1,
                 success: res => {
@@ -104,10 +106,42 @@ Page({
             })
         } 
 
-        setTimeout(draw, 1000)
+        if (/img\/wechat.png/.test(this.data.img)){
+            ctx.drawImage(this.data.img, 0, 0, 1000, 1000)
+            ctx.drawImage(gq_info.path, 0, 0, gq_info.width, gq_info.height, 970 - gq_info.width * gq_info.scale, 970 - gq_info.height * gq_info.scale, gq_info.width * gq_info.scale, gq_info.height * gq_info.scale)
+            ctx.draw(true)
+
+            setTimeout(draw, 100)
+        }else{
+            wx.getImageInfo({
+                src: this.data.img,
+                success: res => {
+                    console.log(res)
+                    //res.path 为getImageInfo预加载的缓存图片地址
+                    ctx.drawImage(res.path, 0, 0, 1000, 1000)
+                    ctx.drawImage(gq_info.path, 0, 0, gq_info.width, gq_info.height, 970 - gq_info.width * gq_info.scale, 970 - gq_info.height * gq_info.scale, gq_info.width * gq_info.scale, gq_info.height * gq_info.scale)
+                    ctx.draw(true)
+
+                    setTimeout(draw, 100)
+                }
+            });
+        }
 
     },
+    choseMode(e) {
+        const index = e.currentTarget.dataset.index
+        if (index == this.data.modeIndex) return
 
+        this.setData({
+            modeIndex: index
+        })
+        this.imgLoad()
+    },
+    openIndex(){
+        wx.navigateTo({
+            url: '/pages/index/index',
+        })
+    },
 
     onLoad: function () {
         ctx = wx.createCanvasContext('myCanvas')
@@ -120,6 +154,7 @@ Page({
                         success: res => {
                             // 可以将 res 发送给后台解码出 unionId
                             this.setData({
+                                loading: false,
                                 userInfo: res.userInfo,
                                 img: res.userInfo.avatarUrl
                             })
@@ -134,10 +169,20 @@ Page({
         })
     },
     getUserInfo: function (e) {
-        this.setData({
-            userInfo: e.detail.userInfo,
-            img: e.detail.userInfo.avatarUrl,
-            hasUserInfo: true
-        })
+        if (e.detail.userInfo){
+            this.setData({
+                loading: false,
+                userInfo: e.detail.userInfo,
+                img: e.detail.userInfo.avatarUrl,
+                hasUserInfo: true
+            })
+        }else{
+            // this.openIndex()
+            // wx.showToast({
+            //     title: '没图没真相啊',
+            //     image: '../../img/wn.png',
+            //     duration: 2000
+            // })
+        }
     }
 })
