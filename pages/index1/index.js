@@ -1,6 +1,5 @@
 //index.js
 //获取应用实例
-const tool = require('./tool.js').tool
 const app = getApp();
 let ctx;
 
@@ -14,20 +13,20 @@ Page({
         modeIndex: 0,
 
         gq: [{
-            path: '/img/guoqi1.jpg',
-            width: 295,
-            height: 221,
-            scale: 1.2
+            path: '/img/guoqi1.png',
+            width: 167,
+            height: 128,
+            scale: 1.92
         }, {
-            path: '/img/guoqi2.jpg',
-            width: 500,
-            height: 556,
-            scale: .6
+            path: '/img/guoqi2.png',
+            width: 128,
+            height: 128,
+            scale: 2.5
         }, {
-            path: '/img/guoqi3.jpg',
-            width: 270,
-            height: 270,
-            scale: 1
+            path: '/img/guoqi3.png',
+            width: 128,
+            height: 128,
+            scale: 2.5
         }, {
             path: '/img/guoqi4.png',
             width: 128,
@@ -42,7 +41,14 @@ Page({
     },
     saveImg(){
         wx.saveImageToPhotosAlbum({
-            filePath: this.data.showImg
+            filePath: this.data.showImg,
+            success: ()=>{
+                wx.showToast({
+                    title: '保存成功',
+                    // image: '../../img/wn.png',
+                    duration: 2000
+                })
+            }
         })
     },
     choseImg() {
@@ -60,7 +66,7 @@ Page({
         if (this.data.loading || !this.data.img) return
         if(res){
             this.setData({
-                imgInfo: res.detail,
+                // imgInfo: res.detail,
                 loading: true,
                 showImg: ''
             })
@@ -68,15 +74,15 @@ Page({
         wx.showLoading({
             title: '图像处理中...',
         })
-        const imgInfo = this.data.imgInfo
-        const width = imgInfo.width
-        const height = imgInfo.height
+        // const imgInfo = this.data.imgInfo
+        // const width = imgInfo.width
+        // const height = imgInfo.height
 
         const gq_info = this.data.gq[this.data.modeIndex]
-        const gq_width = 300
-        const gq_height = Math.floor( gq_width * gq_info.height / gq_info.width )
+        // const gq_width = 320
+        // const gq_height = Math.floor( gq_width * gq_info.height / gq_info.width )
 
-        console.log(gq_width, gq_height)
+        // console.log(gq_width, gq_height)
 
         ctx.clearRect(0, 0, 1000, 1000)
 
@@ -108,7 +114,7 @@ Page({
 
         if (/img\/wechat.png/.test(this.data.img)){
             ctx.drawImage(this.data.img, 0, 0, 1000, 1000)
-            ctx.drawImage(gq_info.path, 0, 0, gq_info.width, gq_info.height, 970 - gq_info.width * gq_info.scale, 970 - gq_info.height * gq_info.scale, gq_info.width * gq_info.scale, gq_info.height * gq_info.scale)
+            ctx.drawImage(gq_info.path, 0, 0, gq_info.width, gq_info.height, 1000 - gq_info.width * gq_info.scale, 1000 - gq_info.height * gq_info.scale, gq_info.width * gq_info.scale, gq_info.height * gq_info.scale)
             ctx.draw(true)
 
             setTimeout(draw, 100)
